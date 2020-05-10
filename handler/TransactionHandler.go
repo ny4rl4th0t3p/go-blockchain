@@ -11,10 +11,6 @@ type TransactionHandler struct {
 	Chain *blockchain.Chain
 }
 
-type TransactionRequest struct {
-	Amount int
-}
-
 func (th *TransactionHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var transaction datastore.Transaction
 	err := json.NewDecoder(r.Body).Decode(&transaction)
