@@ -3,6 +3,7 @@ package blockchain
 import (
 	"blockchainFromScratch/datastore"
 	"bytes"
+	"crypto/sha256"
 	"encoding/json"
 	"fmt"
 	"github.com/google/uuid"
@@ -32,15 +33,13 @@ func (chain *Chain) Init() {
 		Timestamp:         time.Now().Unix(),
 		Transactions:      nil,
 		Nonce:             0,
-		Hash:              "63N3515-8L0CK",
-		PreviousBlockHash: "",
+		Hash:              []byte("63N3515-8L0CK"),
+		PreviousBlockHash: []byte(""),
 	})
 }
 
 func (chain *Chain) AddTransaction(transaction datastore.Transaction) datastore.Transaction {
-	if transaction.TransactionId != "" {
-		transaction.TransactionId = uuid.New()
-	}
+	transaction.TransactionId = uuid.New()
 	chain.PendingTransactions = append(chain.PendingTransactions, transaction)
 	return transaction
 }
@@ -69,4 +68,27 @@ func (chain *Chain) BroadcastTransaction(transaction datastore.Transaction) {
 		}
 		log.Println(string(body))
 	}
+}
+
+func (chain *Chain) GetLastBlock() datastore.Block {
+	return chain.Blocks[len(chain.Blocks)-1]
+}
+
+func (chain *Chain) BlockHash(previousBlockHash []byte, block datastore.Block) []byte {
+
+	b, err := json.Marshal(block)
+	if err != nil {
+		fmt.Println(err)
+	}
+	var blockContent [][]byte
+	blockContent = append(blockContent, previousBlockHash)
+	blockContent = append(blockContent, []byte(string(b)))
+	joinedBlockContent := bytes.Join(blockContent, []byte("|"))
+	h := sha256.New()
+	h.Write(joinedBlockContent)
+	return h.Sum(nil)
+}
+
+func (chain *Chain) AddNewBlock(block datastore.Block) {
+
 }
