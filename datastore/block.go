@@ -5,6 +5,6 @@ type Block struct {
 	Timestamp         int64         `json:"timestamp"`
 	Transactions      []Transaction `json:"transactions"`
 	Nonce             int           `json:"nonce"`
-	Hash              string        `json:"hash"`
-	PreviousBlockHash string        `json:"previous_block_hash"`
+	Hash              []byte        `json:"hash"`
+	PreviousBlockHash []byte        `json:"previous_block_hash"`
 }
