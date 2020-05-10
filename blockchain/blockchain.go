@@ -1,62 +1,30 @@
 package blockchain
 
-import "time"
-
-//type Chain struct {
-//}
-
-type Transaction struct {
-}
-
-type NetworkNode struct {
-}
-
-type Block struct {
-	Index             int
-	Timestamp         time.Time
-	Transactions      []Transaction
-	Nonce             int
-	Hash              string
-	PreviousBlockHash string
-}
+import (
+	"blockchainFromScratch/datastore"
+	"time"
+)
 
 var nodeUrl string
-var chain []Block
-var pendingTransactions []Transaction
-var networkNodes []NetworkNode
+var chain []datastore.Block
+var pendingTransactions []datastore.Transaction
+var networkNodes []datastore.NetworkNode
 
-func Blockchain() {
-	nodeUrl = ""
-	chain = []Block{}
-	pendingTransactions = []Transaction{}
-	networkNodes = []NetworkNode{}
-	// create genesis block
-	createNewBlock(666, "0", "0")
-}
-
-func createNewBlock(nonce int, previousBlockHash string, hash string) Block {
-	block := Block{
+func createNewBlock(nonce int, previousBlockHash string, hash string) datastore.Block {
+	block := datastore.Block{
 		Index:             len(chain),
-		Timestamp:         time.Now(),
+		Timestamp:         time.Now().Unix(),
 		Transactions:      pendingTransactions,
 		Nonce:             nonce,
 		Hash:              hash,
 		PreviousBlockHash: previousBlockHash,
 	}
-	pendingTransactions = []Transaction{}
+	pendingTransactions = []datastore.Transaction{}
 	chain = append(chain, block)
 	return block
 }
 
 func getLastBlock() {
-
-}
-
-func createNewTransaction() {
-
-}
-
-func addTransactionToPendingTransactions() {
 
 }
 
