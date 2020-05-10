@@ -36,7 +36,9 @@ func main() {
 	broadcastHandler := &handler.BroadcastHandler{Chain: &chain}
 	r.Handle("/transaction/broadcast", broadcastHandler).Methods("POST")
 
-	//r.HandleFunc("/mine", ProfileHandler).Methods("GET")
+	mineHandler := &handler.MineHandler{Chain: &chain}
+	r.Handle("/mine", mineHandler).Methods("GET")
+
 	//r.HandleFunc("/receive-new-block", ProfileHandler).Methods("GET")
 	//r.HandleFunc("/register-and-broadcast-node", ProfileHandler).Methods("GET")
 	//r.HandleFunc("/register-node", ProfileHandler).Methods("GET")
