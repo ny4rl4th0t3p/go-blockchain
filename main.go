@@ -42,14 +42,16 @@ func main() {
 	mineHandler := &handler.MineHandler{Chain: &chain}
 	r.Handle("/mine", mineHandler).Methods("GET")
 
-	blockHandler := &handler.BlockHandler{Blocks: &chain.Blocks}
-	r.Handle("/block/{blockHash}", blockHandler).Methods("GET")
+	searchBlockHandler := &handler.SearchBlockHandler{Blocks: &chain.Blocks}
+	r.Handle("/block/{blockHash}", searchBlockHandler).Methods("GET")
+
+	searchTransactionHandler := &handler.SearchTransactionHandler{Blocks: &chain.Blocks}
+	r.Handle("/transaction/{transactionId}", searchTransactionHandler).Methods("GET")
 
 	//r.HandleFunc("/register-and-broadcast-node", ProfileHandler).Methods("GET")
 	//r.HandleFunc("/register-node", ProfileHandler).Methods("GET")
 	//r.HandleFunc("/register-nodes-bulk", ProfileHandler).Methods("GET")
 	//r.HandleFunc("/consensus", ProfileHandler).Methods("GET")
-	//r.HandleFunc("/transaction/{transactionId}", ProfileHandler).Methods("GET")
 	//r.HandleFunc("/address/{address}", ProfileHandler).Methods("GET")
 	//r.HandleFunc("/block-explorer", ProfileHandler).Methods("GET")
 
