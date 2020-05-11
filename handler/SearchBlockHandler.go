@@ -3,7 +3,6 @@ package handler
 import (
 	"blockchainFromScratch/datastore"
 	"encoding/json"
-	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
 )
@@ -12,15 +11,14 @@ type SearchBlockHandler struct {
 	Blocks *[]datastore.Block
 }
 
-func (bh *SearchBlockHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (sbh *SearchBlockHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
 	blockHash := params["blockHash"]
-	fmt.Println(blockHash)
-	for _, block := range *bh.Blocks {
+	for _, block := range *sbh.Blocks {
 		if block.Hash == blockHash {
 			json.NewEncoder(w).Encode(block)
+			break
 		}
 	}
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode("")
 }
