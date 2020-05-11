@@ -1,14 +1,13 @@
 package handler
 
 import (
-	"blockchainFromScratch/blockchain"
 	"blockchainFromScratch/datastore"
 	"encoding/json"
 	"net/http"
 )
 
 type TransactionHandler struct {
-	Chain *blockchain.Chain
+	Chain *datastore.Chain
 }
 
 func (th *TransactionHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {

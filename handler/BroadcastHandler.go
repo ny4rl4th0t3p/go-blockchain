@@ -1,14 +1,14 @@
 package handler
 
 import (
-	"blockchainFromScratch/blockchain"
 	"blockchainFromScratch/datastore"
 	"encoding/json"
 	"net/http"
 )
 
 type BroadcastHandler struct {
-	Chain *blockchain.Chain
+	Chain      *datastore.Chain
+	KnownNodes []datastore.NetworkNode
 }
 
 func (bh *BroadcastHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -18,7 +18,7 @@ func (bh *BroadcastHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	bh.Chain.BroadcastTransaction(bh.Chain.AddTransaction(transaction))
+	bh.Chain.BroadcastTransaction(bh.Chain.AddTransaction(transaction), bh.KnownNodes)
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(transaction)
 }

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"blockchainFromScratch/blockchain"
+	"blockchainFromScratch/datastore"
 	"blockchainFromScratch/handler"
 	"encoding/json"
 	"fmt"
@@ -14,8 +14,20 @@ import (
 func main() {
 
 	// init blockchain
-	chain := blockchain.Chain{}
+	chain := datastore.Chain{}
 	chain.Init()
+
+	node := datastore.NetworkNode{}
+	node.NodeUID = ""
+	node.NodeURL = "http://127.0.0.1"
+	node.Port = 8000
+
+	var knownNodes []datastore.NetworkNode
+	knownNodes = append(knownNodes, datastore.NetworkNode{
+		NodeUID: "f98hf9oph39",
+		NodeURL: "http://server",
+		Port:    8000,
+	})
 
 	b, err := json.Marshal(chain)
 	if err != nil {
@@ -33,7 +45,7 @@ func main() {
 	transactionHandler := &handler.TransactionHandler{Chain: &chain}
 	r.Handle("/transaction", transactionHandler).Methods("POST")
 
-	broadcastHandler := &handler.BroadcastHandler{Chain: &chain}
+	broadcastHandler := &handler.BroadcastHandler{Chain: &chain, KnownNodes: knownNodes}
 	r.Handle("/transaction/broadcast", broadcastHandler).Methods("POST")
 
 	mineHandler := &handler.MineHandler{Chain: &chain}
