@@ -8,11 +8,11 @@ import (
 	"net/http"
 )
 
-type BlockHandler struct {
+type SearchBlockHandler struct {
 	Blocks *[]datastore.Block
 }
 
-func (bh *BlockHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (bh *SearchBlockHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	blockHash := params["blockHash"]
 	fmt.Println(blockHash)
