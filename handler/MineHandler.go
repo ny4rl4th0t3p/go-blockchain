@@ -22,18 +22,12 @@ func (mh *MineHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		PreviousBlockHash: lastBlock.Hash,
 	}
 
-	//
-	// hacer PoW para meter el nonce en newBlock.Nonce
-	//
-
-	//newBlock.Hash = mh.Chain.BlockHash(lastBlock.Hash, newBlock)
-
 	newBlock.Hash = newBlock.BlockHash(lastBlock.Hash, mh.Chain.Dif)
 
 	mh.Chain.AddNewBlock(newBlock)
 	mh.Chain.PendingTransactions = nil
 
-	//
+	// TODO
 	// Broadcast block
 	//
 

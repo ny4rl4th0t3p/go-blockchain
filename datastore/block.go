@@ -2,6 +2,7 @@ package datastore
 
 import (
 	"crypto/sha1"
+	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
@@ -27,7 +28,7 @@ func (block *Block) BlockHash(previousBlockHash string, dif string) string {
 	sum := []byte("xxxx")
 	for !strings.HasPrefix(hex.EncodeToString(sum), dif) {
 		joinedBlockContent := previousBlockHash + string(t) + strconv.Itoa(nonce)
-		h := sha1.New()
+		h := sha256.New()
 		h.Write([]byte(joinedBlockContent))
 		sum = h.Sum(nil)
 		nonce++
