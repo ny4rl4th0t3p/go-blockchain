@@ -3,8 +3,6 @@ package main
 import (
 	"blockchainFromScratch/datastore"
 	"blockchainFromScratch/handler"
-	"encoding/json"
-	"fmt"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
@@ -29,13 +27,6 @@ func main() {
 		Port:    8000,
 	})
 
-	b, err := json.Marshal(chain)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	fmt.Println(string(b))
-
 	// Create a new router
 	r := mux.NewRouter()
 
@@ -51,15 +42,20 @@ func main() {
 	mineHandler := &handler.MineHandler{Chain: &chain}
 	r.Handle("/mine", mineHandler).Methods("GET")
 
-	//r.HandleFunc("/receive-new-block", ProfileHandler).Methods("GET")
+	blockHandler := &handler.BlockHandler{Blocks: &chain.Blocks}
+	r.Handle("/block/{blockHash}", blockHandler).Methods("GET")
+
 	//r.HandleFunc("/register-and-broadcast-node", ProfileHandler).Methods("GET")
 	//r.HandleFunc("/register-node", ProfileHandler).Methods("GET")
 	//r.HandleFunc("/register-nodes-bulk", ProfileHandler).Methods("GET")
 	//r.HandleFunc("/consensus", ProfileHandler).Methods("GET")
-	//r.HandleFunc("/block/{blockHash}", ProfileHandler).Methods("GET")
 	//r.HandleFunc("/transaction/{transactionId}", ProfileHandler).Methods("GET")
 	//r.HandleFunc("/address/{address}", ProfileHandler).Methods("GET")
 	//r.HandleFunc("/block-explorer", ProfileHandler).Methods("GET")
+
+	// TODO
+	receiveBlockHandler := &handler.ReceiveBlockHandler{Chain: &chain}
+	r.Handle("/receive-new-block", receiveBlockHandler).Methods("GET")
 
 	srv := &http.Server{
 		Handler: r,
