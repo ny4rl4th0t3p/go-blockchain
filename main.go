@@ -48,6 +48,9 @@ func main() {
 	searchTransactionHandler := &handler.SearchTransactionHandler{Blocks: &chain.Blocks}
 	r.Handle("/transaction/{transactionId}", searchTransactionHandler).Methods("GET")
 
+	addressHandler := &handler.AddressHandler{Blocks: &chain.Blocks}
+	r.Handle("/address/{address}", addressHandler).Methods("GET")
+
 	//r.HandleFunc("/register-and-broadcast-node", ProfileHandler).Methods("GET")
 	//r.HandleFunc("/register-node", ProfileHandler).Methods("GET")
 	//r.HandleFunc("/register-nodes-bulk", ProfileHandler).Methods("GET")
