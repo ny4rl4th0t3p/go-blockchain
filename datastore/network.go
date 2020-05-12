@@ -1,7 +1,7 @@
 package datastore
 
 type NetworkNode struct {
-	NodeUID string
-	NodeURL string
-	Port    int
+	NodeUID string `json:"id"`
+	NodeURL string `json:"url"`
+	Port    int    `json:"port"`
 }
