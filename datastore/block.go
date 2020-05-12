@@ -18,7 +18,7 @@ type Block struct {
 	PreviousBlockHash string        `json:"previous_block_hash"`
 }
 
-func (block *Block) BlockHash(previousBlockHash string, dif string) string {
+func (block *Block) PoW(previousBlockHash string, dif string) string {
 	t, err := json.Marshal(block.Transactions)
 	if err != nil {
 		fmt.Println(err)
@@ -32,5 +32,18 @@ func (block *Block) BlockHash(previousBlockHash string, dif string) string {
 		sum = h.Sum(nil)
 		nonce++
 	}
+	block.Nonce = nonce
 	return hex.EncodeToString(sum)
+}
+
+func (block *Block) BlockHash(previousBlockHash string) string {
+	t, err := json.Marshal(block.Transactions)
+	if err != nil {
+		fmt.Println(err)
+	}
+	joinedBlockContent := previousBlockHash + string(t) + strconv.Itoa(block.Nonce)
+	h := sha256.New()
+	h.Write([]byte(joinedBlockContent))
+	return hex.EncodeToString(h.Sum(nil))
+
 }

@@ -18,12 +18,12 @@ func main() {
 	node := datastore.NetworkNode{}
 	node.NodeUID = ""
 	node.NodeURL = "http://127.0.0.1"
-	node.Port = 8000
+	node.Port = 8001
 
 	var knownNodes []datastore.NetworkNode
 	knownNodes = append(knownNodes, datastore.NetworkNode{
 		NodeUID: "f98hf9oph39",
-		NodeURL: "http://server",
+		NodeURL: "http://127.0.0.1",
 		Port:    8000,
 	})
 
@@ -57,10 +57,10 @@ func main() {
 	registerBroadcastNodeHandler := &handler.RegisterBroadcastNodeHandler{Nodes: knownNodes, LocalNode: node}
 	r.Handle("/register-and-broadcast-node", registerBroadcastNodeHandler).Methods("POST")
 
-	//r.HandleFunc("/register-and-broadcast-node", ProfileHandler).Methods("GET")
+	consensusNodeHandler := &handler.ConsensusHandler{Chain: &chain, Nodes: knownNodes}
+	r.Handle("/consensus", consensusNodeHandler).Methods("GET")
+
 	//r.HandleFunc("/register-nodes-bulk", ProfileHandler).Methods("GET")
-	//r.HandleFunc("/consensus", ProfileHandler).Methods("GET")
-	//r.HandleFunc("/address/{address}", ProfileHandler).Methods("GET")
 	//r.HandleFunc("/block-explorer", ProfileHandler).Methods("GET")
 
 	// TODO
@@ -69,7 +69,7 @@ func main() {
 
 	srv := &http.Server{
 		Handler: r,
-		Addr:    "127.0.0.1:8000",
+		Addr:    "127.0.0.1:8001",
 		// Good practice: enforce timeouts for servers you create!
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,

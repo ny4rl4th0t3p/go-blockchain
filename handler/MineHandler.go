@@ -22,7 +22,7 @@ func (mh *MineHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		PreviousBlockHash: lastBlock.Hash,
 	}
 
-	newBlock.Hash = newBlock.BlockHash(lastBlock.Hash, mh.Chain.Dif)
+	newBlock.Hash = newBlock.PoW(lastBlock.Hash, mh.Chain.Dif)
 
 	mh.Chain.AddNewBlock(newBlock)
 	mh.Chain.PendingTransactions = nil
