@@ -76,24 +76,10 @@ func (chain *Chain) AddNewBlock(block Block) {
 
 func (chain *Chain) IsValid() bool {
 	isValid := true
-
-	//for (let i = 1; i < blockchain.length; i++) {
-	//	const currentBlock = blockchain[i];
-	//	const prevBlock = blockchain[i - 1];
-	//	const blockHash = this.hashBlock(prevBlock['hash'], { transactions: currentBlock['transactions'], index: currentBlock['index'] }, currentBlock['nonce']);
-	//	if (blockHash.substring(0,4) !== '0000') validChain = false;
-	//	if (currentBlock['previousBlockHash'] !== prevBlock['hash']) validChain = false;
-	//
-	//	console.log('previousBlockHash =>', prevBlock['hash']);
-	//	console.log('currentBlockHash  =>', currentBlock['hash']);
-	//
-	//};
-
 	for i := 1; i < len(chain.Blocks); i++ {
 		if !strings.HasPrefix(chain.Blocks[i].Hash, chain.Dif) && chain.Blocks[i].BlockHash(chain.Blocks[i-1].Hash) != chain.Blocks[i].Hash || chain.Blocks[i].PreviousBlockHash != chain.Blocks[i-1].Hash {
 			isValid = false
 		}
 	}
-
 	return isValid
 }
