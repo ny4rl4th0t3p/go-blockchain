@@ -39,7 +39,7 @@ func main() {
 	broadcastHandler := &handler.BroadcastTransactionHandler{Chain: &chain, KnownNodes: knownNodes}
 	r.Handle("/transaction/broadcast", broadcastHandler).Methods("POST")
 
-	mineHandler := &handler.MineHandler{Chain: &chain}
+	mineHandler := &handler.MineHandler{Chain: &chain, Nodes: knownNodes}
 	r.Handle("/mine", mineHandler).Methods("GET")
 
 	searchBlockHandler := &handler.SearchBlockHandler{Blocks: &chain.Blocks}
@@ -59,9 +59,6 @@ func main() {
 
 	consensusNodeHandler := &handler.ConsensusHandler{Chain: &chain, Nodes: knownNodes}
 	r.Handle("/consensus", consensusNodeHandler).Methods("GET")
-
-	//r.HandleFunc("/register-nodes-bulk", ProfileHandler).Methods("GET")
-	//r.HandleFunc("/block-explorer", ProfileHandler).Methods("GET")
 
 	// TODO
 	receiveBlockHandler := &handler.ReceiveBlockHandler{Chain: &chain}
