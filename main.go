@@ -36,7 +36,7 @@ func main() {
 	transactionHandler := &handler.TransactionHandler{Chain: &chain}
 	r.Handle("/transaction", transactionHandler).Methods("POST")
 
-	broadcastHandler := &handler.BroadcastHandler{Chain: &chain, KnownNodes: knownNodes}
+	broadcastHandler := &handler.BroadcastTransactionHandler{Chain: &chain, KnownNodes: knownNodes}
 	r.Handle("/transaction/broadcast", broadcastHandler).Methods("POST")
 
 	mineHandler := &handler.MineHandler{Chain: &chain}
@@ -53,6 +53,9 @@ func main() {
 
 	registerNodeHandler := &handler.RegisterNodeHandler{Nodes: knownNodes, LocalNode: node}
 	r.Handle("/register-node", registerNodeHandler).Methods("POST")
+
+	registerBroadcastNodeHandler := &handler.RegisterBroadcastNodeHandler{Nodes: knownNodes, LocalNode: node}
+	r.Handle("/register-and-broadcast-node", registerBroadcastNodeHandler).Methods("POST")
 
 	//r.HandleFunc("/register-and-broadcast-node", ProfileHandler).Methods("GET")
 	//r.HandleFunc("/register-nodes-bulk", ProfileHandler).Methods("GET")
