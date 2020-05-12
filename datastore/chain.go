@@ -5,7 +5,6 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
-	"fmt"
 	"github.com/google/uuid"
 	"io/ioutil"
 	"log"
@@ -52,7 +51,6 @@ func (chain *Chain) BroadcastTransaction(transaction Transaction, knownNodes []N
 		log.Fatalln(err)
 	}
 	for _, node := range knownNodes {
-		fmt.Println("entrando a tope")
 		resp, err := http.Post(node.NodeURL+":"+strconv.Itoa(node.Port)+"/transaction", "application/json", bytes.NewBuffer(requestBody))
 		if err != nil {
 			log.Printf("Remote server connection error: [%s]\n", err)
