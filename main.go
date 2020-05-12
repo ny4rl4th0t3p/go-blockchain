@@ -51,8 +51,10 @@ func main() {
 	addressHandler := &handler.AddressHandler{Blocks: &chain.Blocks}
 	r.Handle("/address/{address}", addressHandler).Methods("GET")
 
+	registerNodeHandler := &handler.RegisterNodeHandler{Nodes: knownNodes, LocalNode: node}
+	r.Handle("/register-node", registerNodeHandler).Methods("POST")
+
 	//r.HandleFunc("/register-and-broadcast-node", ProfileHandler).Methods("GET")
-	//r.HandleFunc("/register-node", ProfileHandler).Methods("GET")
 	//r.HandleFunc("/register-nodes-bulk", ProfileHandler).Methods("GET")
 	//r.HandleFunc("/consensus", ProfileHandler).Methods("GET")
 	//r.HandleFunc("/address/{address}", ProfileHandler).Methods("GET")
