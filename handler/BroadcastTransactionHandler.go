@@ -6,19 +6,19 @@ import (
 	"net/http"
 )
 
-type BroadcastHandler struct {
+type BroadcastTransactionHandler struct {
 	Chain      *datastore.Chain
 	KnownNodes []datastore.NetworkNode
 }
 
-func (bh *BroadcastHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (bth *BroadcastTransactionHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var transaction datastore.Transaction
 	err := json.NewDecoder(r.Body).Decode(&transaction)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	bh.Chain.BroadcastTransaction(bh.Chain.AddTransaction(transaction), bh.KnownNodes)
+	bth.Chain.BroadcastTransaction(bth.Chain.AddTransaction(transaction), bth.KnownNodes)
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(transaction)
 }
